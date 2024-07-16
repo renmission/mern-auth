@@ -1,8 +1,37 @@
-# React + Vite
+# MERN Authentication Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
+A full-stack web application built using the MERN stack (MongoDB, Express.js, React.js, Node.js) that provides user authentication features.
 
-Currently, two official plugins are available:
+## Features
+- User Registration
+- User Login/Logout
+- Password Encryption
+- Token-based Authentication (JWT)
+- Protected Routes
+- Responsive UI
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Technologies Used
+- **Frontend:** React.js, Axios, TailwindCSS, Redux Toolkit
+- **Backend:** Node.js, Express.js, MongoDB, Firebase
+- **Authentication:** JSON Web Tokens (JWT), bcrypt.js
+
+## Getting Started
+
+### Prerequisites
+- Node.js
+- MongoDB
+- npm or yarn
+
+### Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/mern-auth-app.git
+   cd mern-auth-app
+
+```bash
+cd server
+npm start
+
+cd client
+npm start
