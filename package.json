@@ -1,0 +1,17 @@
+{
+  "name": "mern-auth",
+  "version": "1.0.0",
+  "description": "## Overview A full-stack web application built using the MERN stack (MongoDB, Express.js, React.js, Node.js) that provides user authentication features.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon api/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "nodemon": "^3.1.4"
+  }
+}
