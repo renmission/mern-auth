@@ -29,7 +29,7 @@ const SignIn = () => {
       const data = await response.json();
       
       if (data.success === false) {
-        dispatch(signInFail(data.message));
+        dispatch(signInFail(data));
         return;
       }
 
@@ -56,7 +56,7 @@ const SignIn = () => {
           <span className='text-blue-500'>Sign Up</span>
         </Link>
       </div>
-      <p className='text-red-500 mt-5'>{error ? error : 'Something went wrong'}</p>
+      <p className='text-red-500 mt-5'>{error ? error || 'Something went wrong' : ''}</p>
     </div>
   )
 }
