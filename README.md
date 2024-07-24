@@ -26,12 +26,13 @@ A full-stack web application built using the MERN stack (MongoDB, Express.js, Re
 ### Installation
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/mern-auth-app.git
-   cd mern-auth-app
+   git clone https://github.com/renmission/mern-auth.git
+   cd mern-auth
 
 ```bash
-cd server
-npm start
+npm install
+
+npm run dev
 
 cd client
-npm start
+npm run dev
