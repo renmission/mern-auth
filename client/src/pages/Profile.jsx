@@ -8,7 +8,8 @@ import {
   deleteUserSuccess,
   updateUserFail, 
   updateUserStart, 
-  updateUserSuccess
+  updateUserSuccess,
+  signOut
  } from '../redux/user/userSlice';
 import { useNavigate } from 'react-router-dom';
 
@@ -95,6 +96,16 @@ const Profile = () => {
     }
   };
 
+  const handleSignOut = async () => {
+    try {
+      await fetch('/api/auth/signout');
+      dispatch(signOut());
+      navigate('/signin');
+    } catch (error) {
+      console.log('Error signing out', error);
+    }
+  };
+
 
 
   return (
@@ -161,7 +172,7 @@ const Profile = () => {
       </form>
       <div className='flex justify-between mt-5 flex-wrap'>
         <span className='text-red-500 cursor-pointer' onClick={handleDelete}>Delete Account</span>
-        <span className='text-red-500 cursor-pointer'>Sign Up</span>
+        <span className='text-red-500 cursor-pointer' onClick={handleSignOut}>Sign Out</span>
       </div>
       <p className='text-red-500 mt-5'>{error && 'Something went wrong'}</p>
       <p className='text-green-500 mt-5'>{updateSuccess && 'Profile Updated Successfully'}</p>

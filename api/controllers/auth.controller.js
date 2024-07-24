@@ -69,7 +69,7 @@ export const signInWithGoogle = async (req, res, next) => {
 };
 
 export const signOutController = (req, res) => {
-    res.clearCookie('access_token').json({
+    return res.clearCookie('access_token').json({
         message: 'Sign out successfully'
     });
 };
