@@ -57,13 +57,19 @@ export const signInWithGoogle = async (req, res, next) => {
             await newUser.save();
             const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
             const { password: userPassword, ...rest } = newUser._doc;
-            res.cookie('access_token', token, { httpOnly: true }).status(200).json(rest);
+            return res.cookie('access_token', token, { httpOnly: true }).status(200).json(rest);
         }
 
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
         const { password: userPassword, ...rest } = user._doc;
-        res.cookie('access_token', token, { httpOnly: true }).status(200).json(rest);
+        return res.cookie('access_token', token, { httpOnly: true }).status(200).json(rest);
     } catch (error) {
         next(error);
     }
+};
+
+export const signOutController = (req, res) => {
+    res.clearCookie('access_token').json({
+        message: 'Sign out successfully'
+    });
 };

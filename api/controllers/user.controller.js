@@ -34,3 +34,18 @@ export const updateUserController = async (req, res, next) => {
         next(errorHandler(400, error.message));
     }
 };
+
+export const deleteUserController = async (req, res, next) => {
+    if (req.user.id !== req.params.id) {
+        return next(errorHandler(403, 'You are not authorized to perform this action'));
+    }
+
+    try {
+        await User.findByIdAndDelete(req.params.id);
+        res.status(200).json({
+            message: 'User has been deleted'
+        });
+    } catch (error) {
+        next(errorHandler(400, error.message));
+    }
+};

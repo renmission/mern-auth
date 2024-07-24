@@ -52,8 +52,8 @@ const SignIn = () => {
         <button type='submit' disabled={loading} className='bg-slate-900 text-white p-3 rounded-lg uppercase'>
           { loading ? 'Loading...' : 'Sign In' }
         </button>
-        <OAuth />
       </form>
+      <OAuth />
       <div className='flex gap-2 mt-5'>
         <p>Don&#39;t have an account?</p>
         <Link to="/signup">
