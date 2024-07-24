@@ -1,15 +1,18 @@
 import { useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 import { app } from '../firebase';
+import { updateUserFail, updateUserStart, updateUserSuccess } from '../redux/user/userSlice';
 
 const Profile = () => {
   const [image, setImage] = useState(undefined);
   const [imagePercent, setImagePercent] = useState(0);
   const [imageError, setImageError] = useState(null);
   const [formData, setFormData] = useState({});
+  const [updateSuccess, setUpdateSuccess] = useState(false);
   const fileRef = useRef(null);
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser, loading, error } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (image) {
@@ -34,16 +37,41 @@ const Profile = () => {
     });
   };
 
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  };
 
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle the update logic here
+    
+    try {
+      dispatch(updateUserStart());
+      const res = await fetch(`/api/users/update/${currentUser._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+
+      if (data.success === false) {
+        dispatch(updateUserFail(data));
+        return;
+      }
+
+      dispatch(updateUserSuccess(data));
+      setUpdateSuccess(true);
+    } catch (error) {
+      dispatch(updateUserFail(error));
+    }
   };
 
   return (
     <div className='px-3 max-w-lg mx-auto'>
       <h1 className="text-3xl font-semibold text-center my-7">Profile</h1>
-      <form onSubmit={handleSubmit} className="flex flex-col items-center gap-4 w-full max-w-md mx-auto">
+      <form onSubmit={handleSubmit} className="flex flex-col items-center gap-4 w-full mx-auto">
         <input 
           type="file" 
           className="hidden" 
@@ -72,22 +100,42 @@ const Profile = () => {
 
 
         <label htmlFor='username' className='w-full'>
-          <input type='text' placeholder='Username' id='username' className='bg-slate-100 p-3 rounded-lg w-full my-3' value={currentUser.username} readOnly />
+          <input 
+            type='text' 
+            placeholder='Username' 
+            id='username' 
+            className='bg-slate-100 p-3 rounded-lg w-full my-3' 
+            defaultValue={currentUser.username}  
+            onChange={handleChange} 
+          />
         </label>
         <label htmlFor='email' className='w-full'>
-          <input type='email' placeholder='Email' id='email' className='bg-slate-100 p-3 rounded-lg w-full my-3' value={currentUser.email} readOnly />
+          <input 
+            type='email' 
+            placeholder='Email' 
+            id='email' className='bg-slate-100 p-3 rounded-lg w-full my-3' 
+            defaultValue={currentUser.email}
+            onChange={handleChange} 
+          />
         </label>
         <label htmlFor='password' className='w-full'>
-          <input type='password' placeholder='Password' id='password' className='bg-slate-100 p-3 rounded-lg w-full my-3' />
+          <input 
+            type='password' 
+            placeholder='Password' 
+            id='password' className='bg-slate-100 p-3 rounded-lg w-full my-3' 
+            onChange={handleChange} 
+          />
         </label>
         <button type='submit' className='bg-slate-900 text-white p-3 rounded-lg uppercase w-full my-3 hover:opacity-95 disabled:opacity-80'>
           Update
         </button>
       </form>
-      <div className='flex justify-between mt-5 flex-wrap gap-2'>
+      <div className='flex justify-between mt-5 flex-wrap'>
         <span className='text-red-500 cursor-pointer'>Delete Account</span>
         <span className='text-red-500 cursor-pointer'>Sign Up</span>
       </div>
+      <p className='text-red-500 mt-5'>{error && 'Something went wrong'}</p>
+      <p className='text-green-500 mt-5'>{updateSuccess && 'Profile Updated Successfully'}</p>
     </div>
   );
 };
